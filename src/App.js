@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { BrowserRouter as Router } from "react-router-dom";
 import {
   MDBNavbar,
@@ -16,21 +17,58 @@ import {
   MDBFooter,
   MDBContainer,
   MDBFormInline,
-  MDBAnimation
+  MDBAnimation,
 } from "mdbreact";
+import "./components/FeaturesPage"
 import "./index.css";
+import FeaturesPage from "./components/FeaturesPage";
+
 
 class AppPage extends React.Component {
-  state = {
-    collapsed: false
-  };
+ 
+  
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapsed: false,
+      banner:{
+        title:"",
+        description:"",
+        image:""
+      }
+    };
+    this.initialize = this.initialize.bind(this);
+
+
+    this.initialize()
+  }
+
+  initialize = () => {
+    axios.get('https://strapi.loginweb.dev/landing-page')
+    .then(res => {
+      console.log(res.data)
+      this.setState({
+        banner: {
+          title: res.data.header[0].title,
+          description: res.data.header[0].description
+        }
+      });
+    })
+    .catch(error => {
+      console.log(error)
+    });
+  }
 
   handleTogglerClick = () => {
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !this.state.collapsed,
     });
   };
+  
 
+
+  //render
   render() {
     const overlay = (
       <div
@@ -39,6 +77,7 @@ class AppPage extends React.Component {
         onClick={this.handleTogglerClick}
       />
     );
+
     return (
       <div id="apppage">
         <Router>
@@ -98,14 +137,11 @@ class AppPage extends React.Component {
                 >
                   <MDBAnimation type="fadeInLeft" delay=".3s">
                     <h1 className="h1-responsive font-weight-bold mt-sm-5">
-                      Make purchases with our app
+                    {this.state.banner.title}
                     </h1>
                     <hr className="hr-light" />
                     <h6 className="mb-4">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Rem repellendus quasi fuga nesciunt dolorum nulla magnam
-                      veniam sapiente, fugiat! Commodi sequi non animi ea dolor
-                      molestiae iste.
+                    {this.state.banner.description}
                     </h6>
                     <MDBBtn color="white">Download</MDBBtn>
                     <MDBBtn outline color="white">
@@ -129,28 +165,21 @@ class AppPage extends React.Component {
         </MDBView>
 
         <MDBContainer>
-          <MDBRow className="py-5">
-            <MDBCol md="12" className="text-center">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </MDBCol>
-          </MDBRow>
+          <FeaturesPage/>
         </MDBContainer>
-        <MDBFooter color='primary-color'>
-          <p className='footer-copyright mb-0 py-3 text-center'>&copy; {new Date().getFullYear()} Copyright:
-             <a href='https://www.MDBootstrap.com'> MDBootstrap.com </a>
+        <MDBFooter color="primary-color">
+          <p className="footer-copyright mb-0 py-3 text-center">
+            &copy; {new Date().getFullYear()} Copyright:
+            <a href="https://www.MDBootstrap.com"> MDBootstrap.com </a>
           </p>
         </MDBFooter>
       </div>
+
+     
     );
+    
   }
+
 }
 
 export default AppPage;
