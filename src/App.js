@@ -23,7 +23,7 @@ import "./components/FeaturesPage"
 import "./index.css";
 import FeaturesPage from "./components/FeaturesPage";
 
-
+const ReactMarkdown = require('react-markdown')
 class AppPage extends React.Component {
  
   
@@ -35,23 +35,45 @@ class AppPage extends React.Component {
       banner:{
         title:"",
         description:"",
-        image:""
+        image:"",
+        btn_name:"",
+        btn_link:"",
+        btn_name1:"",
+        btn_link1:"",
+      },
+      navbarItems:{
+        brand:"",
+        link:"",
+        link1:"",
+        link2:""
       }
     };
     this.initialize = this.initialize.bind(this);
 
 
     this.initialize()
+    
   }
 
   initialize = () => {
     axios.get('https://strapi.loginweb.dev/landing-page')
     .then(res => {
-      console.log(res.data)
+      //console.log(res.data)
       this.setState({
         banner: {
           title: res.data.header[0].title,
-          description: res.data.header[0].description
+          description: res.data.header[0].description,
+          image: res.data.header[0].image.url ,
+          btn_name: res.data.header[0].btn_name,
+          btn_link: res.data.header[0].btn_link,
+          btn_name1: res.data.header[0].btn_name1,
+          btn_link1: res.data.header[0].btn_link1      
+        },
+        navbarItems:{
+          brand: res.data.navbar.brand,
+          link:  res.data.navbar.link,
+          link1: res.data.navbar.link1,
+          link2: res.data.navbar.link2
         }
       });
     })
@@ -92,19 +114,19 @@ class AppPage extends React.Component {
             >
               <MDBContainer>
                 <MDBNavbarBrand>
-                  <strong className="white-text">MDB</strong>
+                  <strong className="white-text">{this.state.navbarItems.brand}</strong>
                 </MDBNavbarBrand>
                 <MDBNavbarToggler onClick={this.handleTogglerClick} />
                 <MDBCollapse isOpen={this.state.collapsed} navbar>
                   <MDBNavbarNav left>
                     <MDBNavItem active>
-                      <MDBNavLink to="#!">Home</MDBNavLink>
+                    <MDBNavLink to="#!">{this.state.navbarItems.link}</MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                      <MDBNavLink to="#!">Link</MDBNavLink>
+                      <MDBNavLink to="#!">{this.state.navbarItems.link1}</MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                      <MDBNavLink to="#!">Profile</MDBNavLink>
+                      <MDBNavLink to="#!">{this.state.navbarItems.link2}</MDBNavLink>
                     </MDBNavItem>
                   </MDBNavbarNav>
                   <MDBNavbarNav right>
@@ -133,27 +155,25 @@ class AppPage extends React.Component {
               <MDBRow>
                 <MDBCol
                   md="6"
-                  className="white-text text-center text-md-left mt-xl-5 mb-5"
-                >
+                  className="white-text text-center text-md-left mt-xl-5 mb-5">
                   <MDBAnimation type="fadeInLeft" delay=".3s">
                     <h1 className="h1-responsive font-weight-bold mt-sm-5">
-                    {this.state.banner.title}
+                     {this.state.banner.title}
                     </h1>
                     <hr className="hr-light" />
                     <h6 className="mb-4">
-                    {this.state.banner.description}
+                    <ReactMarkdown source={this.state.banner.description}/>
                     </h6>
-                    <MDBBtn color="white">Download</MDBBtn>
-                    <MDBBtn outline color="white">
-                      Learn More
-                    </MDBBtn>
+                    <MDBBtn href={this.state.banner.btn_link} target="_blank" color="white">{this.state.banner.btn_name}</MDBBtn>
+                    <MDBBtn href={this.state.banner.btn_link1} target="_blank" outline color="white">{this.state.banner.btn_name1}</MDBBtn>
                   </MDBAnimation>
                 </MDBCol>
 
                 <MDBCol md="6" xl="5" className="mt-xl-5">
                   <MDBAnimation type="fadeInRight" delay=".3s">
                     <img
-                      src="https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png"
+                    
+                      src={'https://strapi.loginweb.dev'+ this.state.banner.image }
                       alt=""
                       className="img-fluid"
                     />
