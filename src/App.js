@@ -136,7 +136,7 @@ class AppPage extends React.Component {
                           <input
                             className="form-control mr-sm-2"
                             type="text"
-                            placeholder="Search"
+                            placeholder="Buscar"
                             aria-label="Search"
                           />
                         </div>
