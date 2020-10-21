@@ -46,6 +46,8 @@ class AppPage extends React.Component {
       <div id="apppage">
         <Router>
           <div>
+            //Navbar 
+            //-------------
             <MDBNavbar
               color="primary-color"
               dark
@@ -97,7 +99,8 @@ class AppPage extends React.Component {
             </MDBNavbar>
             {this.state.collapsed && overlay}
           </div>
-          
+          //route-react
+          //------------
           <Switch>
             <Route path="/login">
               <Login/>
@@ -107,7 +110,9 @@ class AppPage extends React.Component {
             </Route>
           </Switch>
         </Router>
-
+        
+        //sections
+        //-----------------
         <MDBContainer>
            <Feature/>
         </MDBContainer>
