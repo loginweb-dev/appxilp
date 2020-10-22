@@ -12,10 +12,10 @@ import {
   MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem,MDBDropdown, MDBIcon
 } from "mdbreact";
 
-//import asset
+
 import "./App.css";
 
-//import component 
+
 import Intro from './components/Intro';
 import Login from './components/Login';
 import Feature from './components/Feature';
@@ -46,8 +46,6 @@ class AppPage extends React.Component {
       <div id="apppage">
         <Router>
           <div>
-            //Navbar 
-            //-------------
             <MDBNavbar
               color="primary-color"
               dark
@@ -99,8 +97,6 @@ class AppPage extends React.Component {
             </MDBNavbar>
             {this.state.collapsed && overlay}
           </div>
-          //route-react
-          //------------
           <Switch>
             <Route path="/login">
               <Login/>
@@ -111,8 +107,7 @@ class AppPage extends React.Component {
           </Switch>
         </Router>
         
-        //sections
-        //-----------------
+     
         <MDBContainer>
            <Feature/>
         </MDBContainer>
