@@ -1,6 +1,7 @@
 
 import React from 'react'
 import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import {
   MDBMask,
   MDBRow,
@@ -23,13 +24,14 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      email: "",
-      password: ""
+      email: "jaiko92.rm@gmail.com",
+      password: "Password",
+      islogin:false
     }
     // this.postForm = this.postForm.bind(this);
     
   }
-
+  
   async postForm(){
     // console.log('hola');
     // console.log(this.state.email, this.state.password);
@@ -40,21 +42,28 @@ class Login extends React.Component {
 
     })
     .then(function (response) {
-      console.log(response.data.jwt);
+      console.log(response.data.user);
       // alert(response.data.jwt)
-      toast.info(response.data.jwt);
+      //toast.info(response.data.jwt);
+      window.sessionStorage.setItem("db_loginweb", JSON.stringify(response.data.user));
+      this.setState({islogin: true});
     })
     .catch(function (error) {
       // console.log(error);
       // console.log('mi error');
-      toast.error("Error de credencial !");
+      toast.error(error);
       
     });
   
   }
   render(){
+    if (this.state.islogin) {
+      return <Redirect to="/"/>
+    
+    }
     return (
       <div id="classicformpage">
+        
         <ToastContainer />
       <MDBView>
       <MDBMask className="d-flex justify-content-center align-items-center gradient">
@@ -100,7 +109,7 @@ class Login extends React.Component {
                       label="Your email"
                       // icon="envelope"
                       onChange={e => this.setState({email: e.target.value})}
-                      // value={this.state.email}
+                      value={this.state.email}
 
                     />
                     <MDBInput
@@ -110,7 +119,7 @@ class Login extends React.Component {
                       // icon="lock"
                       type="password"
                       onChange={e => this.setState({password: e.target.value})}
-                      // value={this.state.password}
+                      value={this.state.password}
                     />
                     <div className="text-center mt-4 black-text">
                       <MDBBtn onClick={() =>this.postForm()} color="indigo">Login</MDBBtn>

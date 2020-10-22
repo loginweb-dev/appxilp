@@ -16,8 +16,8 @@ import {
 import "./App.css";
 
 
+import Login from './components/Login'; 
 import Intro from './components/Intro';
-import Login from './components/Login';
 import Feature from './components/Feature';
 import Footer from './components/Footer';
 
@@ -25,7 +25,8 @@ import Footer from './components/Footer';
 
 class AppPage extends React.Component {
   state = {
-    collapsed: false
+    collapsed: false,
+    islogin: false
   };
 
   handleTogglerClick = () => {
@@ -33,7 +34,18 @@ class AppPage extends React.Component {
       collapsed: !this.state.collapsed
     });
   };
-
+  componentDidMount(){
+    console.log(window.sessionStorage.getItem('db_loginweb'))
+    if (window.sessionStorage.getItem('db_loginweb')) {
+      // console.log(window.sessionStorage.getItem('db_loginweb'));
+      this.setState({
+        islogin:true
+      })
+    } else {
+      
+    }
+      
+  }
   render() {
     const overlay = (
       <div
@@ -71,27 +83,41 @@ class AppPage extends React.Component {
                       <MDBNavLink to="#!">Link1</MDBNavLink>
                     </MDBNavItem>
                   </MDBNavbarNav>
-                  <MDBNavbarNav right>
-                    <MDBNavItem>
-                      <MDBNavLink className="waves-effect waves-light" to="/login">
-                        <MDBIcon icon="lock" className="mr-1" />Ingresar</MDBNavLink>
-                    </MDBNavItem>
-                    <MDBNavItem>
-                      <MDBNavLink className="waves-effect waves-light" to="#!">
-                        <MDBIcon icon="user-edit" className="mr-1" />Registrarse</MDBNavLink>
-                    </MDBNavItem>
-                    <MDBNavItem>
-                      <MDBDropdown>
-                        <MDBDropdownToggle nav caret>
-                          <MDBIcon icon="user" className="mr-1" />Profile
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu className="dropdown-default" right>
-                          <MDBDropdownItem href="#">My account</MDBDropdownItem>
-                          <MDBDropdownItem href="#!">Log out</MDBDropdownItem>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    </MDBNavItem>
-                  </MDBNavbarNav>
+                 
+                    {
+                      !this.state.islogin &&
+                      <MDBNavbarNav right>
+                          <MDBNavItem>
+                            <MDBNavLink className="waves-effect waves-light" to="/login">
+                              <MDBIcon icon="lock" className="mr-1" />Ingresar</MDBNavLink>
+                          </MDBNavItem>
+                          <MDBNavItem>
+                            <MDBNavLink className="waves-effect waves-light" to="#!">
+                              <MDBIcon icon="user-edit" className="mr-1" />Registrarse</MDBNavLink>
+                          </MDBNavItem>
+                      </MDBNavbarNav>
+                      
+                    }
+                    {
+                      this.state.islogin &&
+                      <MDBNavbarNav right>
+                          <MDBNavItem>
+                            <MDBDropdown>
+                              <MDBDropdownToggle nav caret>
+                                <MDBIcon icon="user" className="mr-1" />Profile
+                              </MDBDropdownToggle>
+                              <MDBDropdownMenu className="dropdown-default" right>
+                                <MDBDropdownItem href="#">My account</MDBDropdownItem>
+                                <MDBDropdownItem href="#!">Log out</MDBDropdownItem>
+                              </MDBDropdownMenu>
+                            </MDBDropdown>
+                          </MDBNavItem>
+                        </MDBNavbarNav> 
+                      
+                    }
+                    
+                    
+                  
                 </MDBCollapse>
               </MDBContainer>
             </MDBNavbar>

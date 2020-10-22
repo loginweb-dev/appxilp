@@ -1,0 +1,12 @@
+
+#loginformpage h6 {
+  line-height: 1.7;
+}
+
+#loginformpage .form-check {
+  margin-bottom: 0 !important;
+}
+
+#loginformpage i {
+  color: #9e9e9e !important;
+}
