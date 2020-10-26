@@ -1,7 +1,7 @@
 
 import React from 'react'
 import axios from 'axios'
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {
   MDBMask,
   MDBRow,
@@ -15,50 +15,48 @@ import {
   MDBInput,
   MDBAnimation
 } from "mdbreact";
-import { render } from '@testing-library/react';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import "./pages/login.css";
+
+import { connect } from 'react-redux';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state={
       email: "jaiko92.rm@gmail.com",
-      password: "Password",
-      islogin:false
+      password: "Password"
     }
     // this.postForm = this.postForm.bind(this);
     
   }
+
+  componentDidMount(){
+    console.log(this.props.user, this.props.islogin)
+  }
   
   async postForm(){
-    // console.log('hola');
-    // console.log(this.state.email, this.state.password);
-    
-    await axios.post('https://appxiapi.loginweb.dev/auth/local', {
+      await axios.post('https://appxiapi.loginweb.dev/auth/local', {
       identifier: this.state.email,
       password: this.state.password
 
     })
-    .then(function (response) {
-      console.log(response.data.user);
-      // alert(response.data.jwt)
+    .then(response => {
       //toast.info(response.data.jwt);
       window.sessionStorage.setItem("db_loginweb", JSON.stringify(response.data.user));
-      this.setState({islogin: true});
+      this.props.loginUser(response.data.user);
     })
-    .catch(function (error) {
-      // console.log(error);
-      // console.log('mi error');
+    .catch(error => {
       toast.error(error);
       
     });
   
   }
   render(){
-    if (this.state.islogin) {
-      return <Redirect to="/"/>
+    if (this.props.islogin) {
+      return <Redirect to="/home"/>
     
     }
     return (
@@ -97,12 +95,6 @@ class Login extends React.Component {
                       <MDBIcon icon="user" /> Login:
                     </h3>
                     <hr className="hr-light" />
-                    {/* <MDBInput
-                      className="white-text"
-                      iconClass="white-text"
-                      label="Your name"
-                      icon="user"
-                    /> */}
                     <MDBInput
                       // className="black-text"
                       // iconClass="white-text"
@@ -147,7 +139,24 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+const mapStateToProps = (state) => {
+  return {
+    islogin: state.islogin,
+    user: state.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      loginUser : (user) => dispatch({
+          type: 'LOGIN_USER',
+          payload: user
+      })
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
 

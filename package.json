@@ -10,8 +10,11 @@
     "mdbreact": "^4.27.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-markdown": "^5.0.2",
+    "react-redux": "^7.2.1",
     "react-scripts": "3.4.3",
-    "react-toastify": "^6.0.9"
+    "react-toastify": "^6.0.9",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "PORT=3010 react-scripts start",
